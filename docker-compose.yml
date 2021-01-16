@@ -1,0 +1,28 @@
+version : '3.5'
+x-services-volume:
+    &services-volume
+    type: bind  
+
+services:
+    app:
+        container_name: app
+        build: 
+            context: .
+        # volumes:
+        #     - <<: *services-volume
+        #       source: "../go/cert"
+        #       target: "/usr/share/ca-certificates/"
+        links: 
+            - postgres:app_db
+        ports: 
+            - "5000:5000"
+        networks:
+            - docker_network
+    
+networks:
+    docker_network:
+        driver: bridge
+        driver_opts:
+            com.docker.network.enable_ipv6: "true"
+        ipam:
+            driver: default
